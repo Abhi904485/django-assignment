@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ video.original_name }}</title>
+    <link rel="shortcut icon" type="image/png" href="https://static.djangoproject.com/img/favicon.6dbf28c0650e.ico"/>
+    <link href="https://unpkg.com/video.js@7.5.4/dist/video-js.css" rel="stylesheet">
+    <script src="https://unpkg.com/video.js@7.5.4/dist/video.js"></script>
+    <script src="https://unpkg.com/@silvermine/videojs-quality-selector/dist/js/silvermine-videojs-quality-selector.min.js"></script>
+    <link href="https://unpkg.com/@silvermine/videojs-quality-selector/dist/css/quality-selector.css" rel="stylesheet">
+
+</head>
+<body>
+<h1>{{ video.original_name }}</h1>
+
+<h3>
+    <a href="{% url 'list' %}">Go Back</a>
+</h3>
+<video id="videoPlayer" class="video-js vjs-default-skin" width="640" height="360" controls preload="auto">
+    {% for quality in video.video_qualities.all %}
+        <source src="{{ quality.source }}" type="{{ quality.type }}" label="{{ quality.label }}P"
+                selected="{% if quality.selected %}
+            	'true'
+            	{% else %}
+            	'false'
+            {% endif %} ">
+    {% endfor %}
+    {% for subtitle in video.video_subtitles.all %}
+        <track label="{{ subtitle.label }}" kind="{{ subtitle.kind }}" srclang="{{ subtitle.src_lang }}"
+               src="{{ subtitle.src }}" default>
+    {% endfor %}
+</video>
+
+<h2>Search Subtitles</h2>
+<form id="searchForm">
+    <label for="searchPhrase">Search Phrase:</label>
+    <input type="text" id="searchPhrase" placeholder="Enter phrase to search" required>
+    <label for="language">Language:</label>
+    <select id="language">
+        <option value="">Select Language</option>
+        {% for language in languages %}
+            <option value="{{ language }}">{{ language }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Search</button>
+</form>
+
+<!-- Dropdown for search results -->
+<p></p>
+<p></p>
+<p></p>
+<label for="searchResults">Search Results:</label>
+<select id="searchResults">
+    <option value="">Select a subtitle</option>
+</select>
+
+<script>
+    let player;
+    videojs('videoPlayer', {}, function () {
+        player = this;
+        player.controlBar.addChild('QualitySelector');
+    });
+    document.getElementById('searchForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const phrase = document.getElementById('searchPhrase').value;
+        const lang = document.getElementById('language').value;
+        console.log(phrase);
+        // Fetch search results from the API
+        fetch(`/videos/{{ video.id }}/search?phrase=${encodeURIComponent(phrase)}&lang=${encodeURIComponent(lang)}`)
+            .then(response => response.json())
+            .then(data => {
+                const results = data.results; // Use 'results' if the API returns an array of subtitle objects
+                const dropdown = document.getElementById('searchResults');
+                dropdown.innerHTML = '<option value="">Select a subtitle</option>';  // Reset dropdown
+
+                // Populate dropdown with results
+                results.forEach(result => {
+                    const option = document.createElement('option');
+                    option.value = `${result.start}`;  // Use start time as value
+                    option.textContent = `${result.start} - ${result.end} | ${result.text}`;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching search results:', error));
+    });
+
+    // Event handler for dropdown change
+    document.getElementById('searchResults').addEventListener('change', function () {
+        const selectedTime = this.value;
+        if (selectedTime) {
+            const parts = selectedTime.split(':');
+            if (parts.length === 2 || parts.length === 3) { // Handle hh:mm:ss or mm:ss
+                const secondsParts = parts[parts.length - 1].split('.');  // Split to handle milliseconds
+                const hours = parts.length === 3 ? parseInt(parts[0]) : 0;  // If no hours, default to 0
+                const minutes = parseInt(parts[parts.length - 2]);
+                const seconds = parseInt(secondsParts[0]);
+                const milliseconds = parseInt(secondsParts[1] || '0');  // Handle case where milliseconds may not be present
+                const totalSeconds = hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
+                player.currentTime(totalSeconds)
+                player.play()
+            } else {
+                console.error('Invalid timestamp format');
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

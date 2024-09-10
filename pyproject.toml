@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "upload-video-and-process"
+version = "0.1.0"
+description = "\u0000users to upload videos, which will be processed in the background. After processing and extracting subtitles from the video, the subtitles should be returned to the frontend, integrated with the video, and displayed as closed captions. Ensure that the logic supports multiple language subtitles"
+authors = ["Abhishek Kumar Singh <Abhishek9044855265@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.1"
+celery = "^5.4.0"
+django-celery-results = "^2.5.1"
+django-cors-headers = "^4.4.0"
+djangorestframework = "^3.15.2"
+flower = "^2.0.1"
+redis = "^5.0.8"
+python-ffmpeg-video-streaming = "^0.1.16"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

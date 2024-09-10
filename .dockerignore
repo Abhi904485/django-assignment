@@ -1,0 +1,50 @@
+# Python cache directories
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Django specific
+*.log
+*.pot
+*.py[cod]
+
+# Environment files
+.env
+
+# IDE/editor directories
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Version control directories
+.git/
+.gitignore
+
+# Build directories
+build/
+dist/
+*.egg-info/
+
+# Node modules and other unnecessary directories (if applicable)
+node_modules/
+
+# Docker specific
+Dockerfile
+docker-compose.yml
+
+# Poetry specific
+
+# Miscellaneous
+*.DS_Store
+*.coverage
+*.tox
+*.nox
+*.hypothesis/
+*.pytest_cache/
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+sample video

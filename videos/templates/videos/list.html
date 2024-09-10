@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded Videos</title>
+    <link rel="shortcut icon" type="image/png" href="https://static.djangoproject.com/img/favicon.6dbf28c0650e.ico"/>
+</head>
+<body>
+<h1>Uploaded Videos</h1>
+<ul>
+    {% for video in videos %}
+        <li>
+            <a href="{% url 'detail' video.id %}">{{ video.original_name }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>Upload New Video</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>
+        <input type="text" name="name" placeholder="Name" required>
+    </label>
+    <input type="file" name="video_file" accept="video/*" required>
+    <button type="submit">Upload</button>
+</form>
+</body>
+</html>
