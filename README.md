@@ -45,7 +45,11 @@ We at Fatmug are looking for a candidate to help develop, maintain, and optimize
 **I tied ccextractor. But ccextractor is not able to found out embedded subtitles. But cc extractor internally using ffmpeg
 so i am directly using ffmpeg despite ccextractor.**
 
-# Sample
+# Demo
+
+[Watch the Demo](https://drive.google.com/file/d/117xAoKtbkKtGWGets1ddQtmktCEKVAH3/view?usp=sharing)
+
+# Sample Clicks
 
 ![1](screenshots/1.png)
 
