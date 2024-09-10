@@ -23,3 +23,48 @@ We at Fatmug are looking for a candidate to help develop, maintain, and optimize
 
 - Include a `screenshots` folder in the project directory containing screenshots of the application in use. Capture screenshots of every possible action.
 - Upload the project to GitHub and provide the repository link.
+
+## Prerequisites
+
+- ffmpeg
+- ffprobe
+
+## How to Install in Ubuntu
+
+- sudo apt install ffmpeg
+
+## How to Run
+- Docker compose up -d
+- Ui will accessible at http://localhost:8000
+- Flower Ui will accessible at http://localhost:5555
+
+## How to Run Test Cases
+- docker compose exec backend sh -c 'python manage.py test'
+
+# NOTE
+**I tied ccextractor. But ccextractor is not able to found out embedded subtitles. But cc extractor internally using ffmpeg
+so i am directly using ffmpeg despite ccextractor.**
+
+# Sample
+
+![1](screenshots/1.png)
+
+![2](screenshots/2.png)
+
+![3](screenshots/3.png)
+
+![4](screenshots/4.png)
+
+![5](screenshots/5.png)
+
+![6](screenshots/6.png)
+
+![7](screenshots/7.png)
+
+![8](screenshots/8.png)
+
+![9](screenshots/9.png)
+
+![10](screenshots/10.png)
+
+![11](screenshots/11.png)
